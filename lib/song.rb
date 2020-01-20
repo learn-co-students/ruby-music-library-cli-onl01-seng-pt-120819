@@ -5,7 +5,7 @@ class Song
 
   @@all = []
 
-  def initialize(name, artist = nil)
+  def initialize(name, artist = nil, genre = nil)
     @name = name
     self.artist = artist if artist
     self.genre = genre if genre
@@ -37,5 +37,13 @@ class Song
 
   def save
     @@all << self
+  end
+
+  def self.find_by_name(name)
+    all.detect{|song| song.name == name}
+  end
+
+  def find_or_create_by_name
+    
   end
 end

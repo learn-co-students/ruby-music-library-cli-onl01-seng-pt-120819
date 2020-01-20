@@ -1,12 +1,14 @@
 class Artist
   attr_accessor :name
-  attr_reader :songs
+  attr_reader :songs, :genre
+
 
   @@all = []
 
   def initialize(name)
     @name = name
     @songs = []
+    
     save #@@all << self
   end
 
@@ -30,8 +32,13 @@ class Artist
     @songs
   end
 
-  def add_song(song)
-    song.artist = self unless song.artist
-    songs << song unless songs.include?(song)
+  def genres
+    songs.collect{|song| song.genre}.uniq
   end
+
+  def add_song(song)
+    song.artist = self unless song.artist # defaults artist to self unless otherwise stated
+    songs << song unless songs.include?(song) # adds song to artist's songs unless it is already there
+  end
+
 end
