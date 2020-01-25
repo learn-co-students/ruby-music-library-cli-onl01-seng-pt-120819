@@ -1,8 +1,8 @@
-require_relative '../lib/concerns/findable'
+
 
 class MusicLibraryController
   
-extend Concerns::Findable
+
   
   def initialize(path = './db/mp3s')
     importer = MusicImporter.new(path)
@@ -42,11 +42,55 @@ extend Concerns::Findable
    end
    
    def list_songs
-     sorted_songs = Songs.all.sort{|a,b| a.name <=> b.name}
-     sorted_songs.each.with_index(1) do |song, index|
-      puts "#{index}. #{song.artist.name} - #{song.name} - #{song.genre.name}"
+    sorted_songs = Song.all.sort{|a,b| a.name <=> b.name}
+    sorted_songs.each.with_index(1) do |song, index|
+     puts "#{index}. #{song.artist.name} - #{song.name} - #{song.genre.name}"
    end
+ end
+
+  def list_artists
+    sorted_artists = Artist.all.sort{|a,b| a.name <=> b.name}
+    sorted_artists.each.with_index(1) do |artist, index|
+     puts "#{index}. #{artist.name}"
   end
 end
+ 
+  def list_genres
+    sorted_genres = Genre.all.sort{|a,b| a.name <=> b.name}
+    sorted_genres.each.with_index(1) do |genre, index|
+     puts "#{index}. #{genre.name}"
+  end
+end
+
+ def list_songs_by_artist
+ puts "Please enter the name of an artist:"
+  input= gets.chomp
+  if artist = Artist.find_by_name(input)
+    sorted_songs = artist.songs.sort_by{|a| a.name}
+    sorted_songs.each.with_index(1) do |song, index|
+     puts "#{index}. #{song.name} - #{song.genre.name}"
+    end
+  end
 end
     
+  def list_songs_by_genre
+    puts "Please enter the name of a genre:"
+    input= gets.chomp
+    if genre = Genre.find_by_name(input)
+      sorted_songs = genre.songs.sort_by{|a| a.name}
+      sorted_songs.each.with_index(1) do |song, index|
+       puts "#{index}. #{song.artist.name} - #{song.name}"
+      end
+    end
+  end
+
+  def play_song
+    puts "Which song number would you like to play?"
+    input = gets.to_i
+    if input > 0 && input <= Song.all.length
+      list_songs = Song.all.sort{|a,b| a.name <=> b.name}
+      song = list_songs[input-1]
+     puts "Playing #{song.name} by #{song.artist.name}"
+    end
+  end
+end
