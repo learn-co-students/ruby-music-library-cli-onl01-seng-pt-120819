@@ -1,6 +1,10 @@
 require 'pry'
+# require_relative 'concerns/findable.rb'
 class Song
     
+    
+    extend Concerns::Findable
+
     attr_accessor :name, :artist, :genre
     
     @@all = []
@@ -9,7 +13,7 @@ class Song
         @name = name 
         artist != nil ? self.artist=(artist) : nil
         genre != nil ? self.genre=(genre) : nil
-        save
+
     end
 
     def self.all 
@@ -28,7 +32,6 @@ class Song
         new_song = Song.new(song)
         new_song.save
         new_song
-
     end 
 
     def artist=(artist)
@@ -49,17 +52,20 @@ class Song
         end
     end
 
-    def self.find_by_name(name)
-        @@all.detect {|sn| sn.name == name }
+    def self.new_from_filename(filename)
+        filename_array = filename.split(" - ") #formatting the filename
+        filename_artist = filename_array[0]
+        filename_song = filename_array[1]
+        filename_genre = filename_array[2].split('.mp3').join()
+        artist = Artist.find_or_create_by_name(filename_artist)
+        genre = Genre.find_or_create_by_name(filename_genre)
+
+
+        new(filename_song, artist, genre)
     end
 
-    def self.find_or_create_by_name(name)
-        if self.find_by_name(name)
-            self.find_by_name(name)
-        elsif !@@all.include?(name) 
-            self.create(name)
-        end 
+    def self.create_from_filename(filename)
+        new_from_filename(filename).save
     end
-
     # binding.pry
 end
