@@ -29,8 +29,8 @@ class Artist
 
   def add_song(song)
 
-    if @songs.each{|song_element| song_element != song}
-       @songs << song
+    if !@songs.include?(song)
+    @songs << song
     end
 
     if song.artist != self
