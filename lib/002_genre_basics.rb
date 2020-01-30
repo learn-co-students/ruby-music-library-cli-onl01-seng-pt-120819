@@ -6,6 +6,7 @@ class Genre
 
   def initialize(name)
     @name = name
+    @songs = []
   end
 
   def self.all
@@ -24,6 +25,16 @@ class Genre
     class_instance = self.new(name)
     class_instance.save
     class_instance
+  end
+
+  def songs
+    @songs
+  end
+
+  def artists
+    new_arr = []
+    @songs.collect{|song| new_arr << song.artist}
+    new_arr.uniq
   end
 
 end

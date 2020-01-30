@@ -30,7 +30,7 @@ class Artist
   def add_song(song)
 
     if !@songs.include?(song)
-    @songs << song
+      @songs << song
     end
 
     if song.artist != self
@@ -42,4 +42,9 @@ class Artist
     @songs
   end
 
+  def genres
+    new_arr = []
+    @songs.each{|song| new_arr << song.genre}
+    new_arr.uniq
+  end
 end
