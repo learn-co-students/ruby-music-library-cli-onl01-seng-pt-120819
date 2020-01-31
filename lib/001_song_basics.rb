@@ -2,8 +2,9 @@ class Song
 
   @@all = []
 
-  attr_accessor :name, :genre
+  attr_accessor :name
   attr_writer :artist, :genre
+
 
   def initialize(name, artist = nil, genre = nil)
     @name = name
@@ -50,4 +51,31 @@ class Song
     end
   end
 
+  def self.find_by_name(name)
+   if @@all.find{|song| song.name == name}
+     return @@all.find{|song| song.name == name}
+   end
+ end
+
+ def  self.find_or_create_by_name(name)
+    if self.find_by_name(name)
+      return self.find_by_name(name)
+    else
+      self.create(name)
+    end
   end
+
+  def self.new_by_filename(filename)
+    artist, song = filename.split(" - ")
+    new_song = self.new(song)
+    new_song.artist_name = artist
+    new_song
+  end
+
+    # def self.new_from_filename(filename)
+    #     artist, song = filename.split(" - ")
+    #     new_song = self.new(song)
+    #     new_song.artist.name
+    #     new_song
+    #   end
+end
