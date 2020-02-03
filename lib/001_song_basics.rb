@@ -2,8 +2,8 @@ class Song
 
   @@all = []
 
-  attr_accessor :name
-  attr_writer :artist, :genre
+  attr_accessor :name, :genre
+  attr_writer :artist
 
 
   def initialize(name, artist = nil, genre = nil)
@@ -65,17 +65,11 @@ class Song
     end
   end
 
-  def self.new_by_filename(filename)
-    artist, song = filename.split(" - ")
-    new_song = self.new(song)
-    new_song.artist_name = artist
-    new_song
+  def self.new_from_filename(filename)
+    artist, song, genre = filename.split(" - ")
+    self.new(song, artist, genre)
+
   end
 
-    # def self.new_from_filename(filename)
-    #     artist, song = filename.split(" - ")
-    #     new_song = self.new(song)
-    #     new_song.artist.name
-    #     new_song
-    #   end
+  
 end
