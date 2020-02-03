@@ -1,3 +1,5 @@
+require 'pry'
+
 class Song
 
   attr_accessor :name
@@ -9,7 +11,7 @@ class Song
     @name = name
     self.artist = artist if artist
     self.genre = genre if genre
-    @@all << self
+  #  @@all << self
   end
 
   def artist=(artist)
@@ -41,7 +43,12 @@ class Song
   end
 
   def self.find_by_name(name)
-    @@all.find(&:name)
+    @@all.detect {|song| song.name == name }
+#binding.pry
+  end
+
+  def self.find_or_create_by_name(name)
+    find_by_name(name) || create(name)
 
   end
 
