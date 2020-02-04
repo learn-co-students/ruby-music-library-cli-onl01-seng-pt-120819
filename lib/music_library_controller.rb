@@ -28,11 +28,20 @@ class MusicLibraryController
   end
 
   def list_artists
-  # binding.pry
      Artist.all.sort_by(&:name).each.with_index(1) do |art, idx|
-    # Artist.all.map{|a| a.name}
       puts "#{idx}. #{art.name}"
     end
+  end
+
+  def list_genres
+     Genre.all.sort_by(&:name).each.with_index(1) do |gn, idx|
+      puts "#{idx}. #{gn.name}"
+    end
+  end
+
+  def list_songs_by_artist
+    puts "Please enter the name of an artist:"
+    input = gets.strip
   end
 
   end
