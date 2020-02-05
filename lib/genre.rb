@@ -11,6 +11,10 @@ class Genre
 
   end
 
+  def artists
+    songs.map(&:artist).uniq
+  end
+
   def self.all
     @@all
   end
