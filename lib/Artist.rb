@@ -1,3 +1,4 @@
+require 'pry'
 class Artist 
   attr_accessor :name
   @@all = []
@@ -5,7 +6,6 @@ class Artist
   def initialize (name)
    @name = name
    @songs = []
-   @genre = genre
   end 
   
   def self.all
@@ -27,18 +27,21 @@ class Artist
   end 
   
   def songs
-    Song.all.select {|song| song.artist == self}
+    @songs
+    # binding.pry
+    # Song.all.select {|song| song.artist == self}
   end
   
   def add_song(song)
     if(song.artist.nil?)
       song.artist = self 
       @songs << song
+      # binding.pry
     end
   end
  
  def genres
-  self.songs.collect{|s| s.genre}.uniq
+  self.songs.collect{|s| s.genres}.uniq
  end
 end 
 
