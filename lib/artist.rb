@@ -1,8 +1,8 @@
 require 'pry'
 class Artist 
-  extend Concerns::Findable
+  extend Findable::ClassMethods
 
-  attr_accessor :name
+  attr_accessor :name, :songs
   @@all = []
   
   def initialize (name)
@@ -35,11 +35,8 @@ class Artist
   end
   
   def add_song(song)
-    if(song.artist.nil?)
-      song.artist = self 
-      @songs << song
-      # binding.pry
-    end
+    song.artist = self unless song.artist == self
+      @songs << song unless @songs.include?(song)
   end
  
  def genres

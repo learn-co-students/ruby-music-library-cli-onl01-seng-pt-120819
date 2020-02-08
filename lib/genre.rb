@@ -1,12 +1,11 @@
 class Genre
-  extend Concerns::Findable
-  attr_accessor :name
+  extend Findable::ClassMethods
+  attr_accessor :name, :songs
   @@all = []
   
   def initialize (name)
    @name = name
    @songs = []
-   self.save
   end 
   
   def self.all
