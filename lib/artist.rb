@@ -1,6 +1,6 @@
 require 'pry'
 class Artist 
-  extend Findable::ClassMethods
+  extend Concerns::Findable
 
   attr_accessor :name, :songs
   @@all = []
@@ -30,8 +30,6 @@ class Artist
   
   def songs
     @songs
-    # binding.pry
-    # Song.all.select {|song| song.artist == self}
   end
   
   def add_song(song)
