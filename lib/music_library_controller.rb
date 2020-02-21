@@ -2,7 +2,7 @@ class MusicLibraryController
 
 def initialize(path = "./db/mp3s")
 MusicImporter.new(path).import
-end
+  end
 
 def call
 input = ' '
@@ -18,25 +18,25 @@ puts ("To quit, type 'exit'.")
 puts ("What would you like to do?")
 
 input = gets.strip
-end
+  end
 end
 
 def list_songs
 Song.all.sort_by(&:name).each.with_index(1) do |song, idx|
 puts "#{idx}. #{song.artist.name} - #{song.name} - #{song.genre.name}"
-end
+  end
 end
 
 def list_artists
 Artist.all.sort_by(&:name).each.with_index(1) do |art, idx|
 puts "#{idx}. #{art.name}"
-end
+  end
 end
 
 def list_genres
 Genre.all.sort_by(&:name).each.with_index(1) do |gn, idx|
 puts "#{idx}. #{gn.name}"
-end
+  end
 end
 
 def list_songs_by_artist
@@ -46,8 +46,8 @@ input = gets.strip
 if artist = Artist.find_by_name(input)
 artist.sort_by(&:name).each.with_index(1) do |song, idx|
 puts "#{idx}. #{song.name} - #{song.genre.name}"
-end
-end
+    end
+  end
 end
 
 def list_songs_by_genre
@@ -57,8 +57,8 @@ input = gets.strip
 if genre = Genre.find_by_name(input)
 genre.sort_by(&:name).each.with_index(1) do |song, idx|
 puts "#{idx}. #{song.artist.name} - #{song.name}"
-end
-end
+    end
+  end
 end
 
 def play_song
@@ -66,8 +66,8 @@ puts 'Which song number would you like to play?'
 input = gets.strip.to_i
 if (1..Song.all.length.include?(input)
 song = Song.all.sort_by(&:name)[input - 1]
-end
+  end
 
 puts "Playing #{song.name} by #{song.artist.name}" if song
-end
+  end
 end

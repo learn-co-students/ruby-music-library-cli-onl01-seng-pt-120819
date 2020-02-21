@@ -3,13 +3,14 @@ attr_reader :path
 
 def initialize(path)
 @path = path
-end
+  end
 
 def files
-Dir.glob("#{path}/*").map { |file| file.gsub("#{path}/", '')}
+Dir.glob("#{path}/*").map { |file| file.gsub("#{path}/", '') }
+  end
 end
 
 def import
-files.each { |file| } Song.create_from_filename(file) }
-end
+files.each {|file| } Song.create_from_filename(file) }
+  end
 end
