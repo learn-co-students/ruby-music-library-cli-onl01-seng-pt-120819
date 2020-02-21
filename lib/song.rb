@@ -1,95 +1,62 @@
 class Song
+#extend Concerns::Findable
 
-   extend Concerns::Findable
+attr_accessor :name
+attr_reader :artist, :genre
 
-  attr_accessor :name
+@@all = []
 
-  @@all = [] 
+def initialize (name, artist = nil, genre = nil)
+@name = name
+self.artist = artist if artist
+self.genre = genre if genre
+end
 
-  def initialize(name,artist=nil,genre=nil)
-    @name = name
-    self.artist = artist if artist
-    self.genre = genre if genre
-  end
+def artist=(artist)
+@artist = artist
+artist.add_song(self)
+end
 
-  def self.all
-    @@all
-  end
+def genre=(genre)
+@genre = genre
+genre.songs.push self unless genre.songs.include? self
+end
 
-  def self.destroy_all
-    self.all.clear
-  end
+def self.all
+@@all
+end
 
-  def save
-    @@all << self
-  end
+def self.destroy_all
+all.clear
+end
 
-  def self.create(name)
-    self.new(name).tap do|song|
-      song.save
-    end
-  end
+def save
+self.classes.all << self
+end
 
-  def artist=(artist)
-    if @artist == nil
-      @artist = artist
-    else
-      @artist = @artist
-    end
-    if self.artist != nil
-      @artist.add_song(self)
-    end
-    @artist
-  end
+def self.find_by_name(name)
+all.find{ |song| song.name == name }
+end
 
-  def artist
-    @artist
-  end
+def self.find_or_create_by_name(name)
+find_by_name(name) || create(name)
+end
 
-  def genre=(genre)
-    if @genre == nil
-      @genre = genre
-    else
-      @genre= @genre
-    end
-    if self.genre != nil
-      @genre.add_song(self)
-    end
-    @genre
+def self.create(name)
+song = new(name)
+song.save
+song
+end
 
-  end
+def self.new_from_filename(name)
+artist, song, genre_name = name.split(' - ')
+fixed_name = genre_name.gsub('.mp3', '')
+artist = Artist.find_or_create_by_name(artist)
+genre = Genre.find_or_create_by_name(fixed_name)
+new(song, artist, genre)
+end
 
-  def genre
-    @genre
-  end
-
-  def self.find_by_name(name)
-    @@all.find do |song|
-        song.name == name
-    end
-  end
-
-  def self.find_or_create_by_name(name)
-    self.find_by_name(name) || self.create(name)
-  end
-
-  def self.create_from_filename(name)
-    @@all << self.new_from_filename(name)
-
-  end
-
-  def self.new_from_filename(name)
-    song_name = name.split(" - ")[1]
-    artist_name = name.split(" - ")[0]
-    genre_name = name.split(" - ")[2].chomp(".mp3")
-   
-    song = self.find_or_create_by_name(song_name)
-
-    song.artist = Artist.find_or_create_by_name(artist_name)
-   
-    song.genre = Genre.find_or_create_by_name(genre_name)
-    song
-  end
-
-
+def self.create_from_filename(name)
+new_from_filename(name).save
+end
 end
